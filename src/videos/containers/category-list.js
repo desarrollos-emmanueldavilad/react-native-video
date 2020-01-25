@@ -1,47 +1,36 @@
 import React, { Component } from 'react';
 import {
-  FlatList,
-  Text
+  View,
+  FlatList
 } from 'react-native';
-import Layout from '../components/suggestion-list-layout';
 import Empty from '../components/empty';
-import Separator from '../components/vertical-separator';
-import Suggestion from '../components/suggestion';
+import Separator from '../../sections/components/horizontal-separator';
+import Category from '../components/category';
+import Layout from '../components/category-list-layout';
 import { connect } from 'react-redux';
 
 function mapStateToProps(state) {
   return {
-    list: state.suggestionList
+    list: state.categoryList
   }
 }
 
-class SuggestionList extends Component {
+class CategoryList extends Component {
   keyExtractor = item => item.id.toString()
   renderEmtpy = () => <Empty text="No hay sugerencias :(" />
   itemSeparator = () => <Separator />
-  viewMovie = (item) => {
-    this.props.dispatch({
-      type: 'SET_SELECTED_MOVIE',
-      payload: {
-        movie: item,
-      }
-    })
-  }
   renderItem = ({item}) => {
     return (
-      <Suggestion
-        {...item}
-        onPress={()=> { this.viewMovie(item) }}
-      />
+      <Category {...item}/>
     )
   }
   render() {
-
     return (
       <Layout
-        title="Recomendado para ti"
+        title="Categorias"
         >
         <FlatList
+          horizontal
           keyExtractor={this.keyExtractor}
           data={this.props.list}
           ListEmptyComponent={this.renderEmtpy}
@@ -53,4 +42,4 @@ class SuggestionList extends Component {
   }
 }
 
-export default connect(mapStateToProps)(SuggestionList)
+export default connect(mapStateToProps)(CategoryList);
